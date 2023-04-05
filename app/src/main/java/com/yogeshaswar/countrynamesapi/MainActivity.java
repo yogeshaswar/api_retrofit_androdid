@@ -26,6 +26,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     // base url => https://api.printful.com       end point => countries
    ArrayList<CountryModel>countries;
+   ArrayList<CountryModel> countryList;
    AppDatabase appDatabase;
     CountryModelDao countryModelDao;
     RecyclerView recyclerView;
@@ -35,11 +36,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initiateUI();
-        getApiData();
         // database
         appDatabase = AppDatabase.getINSTANCE(this);
         countryModelDao = appDatabase.countryModelDao();
+        getApiData();
 
+
+    }
+
+    private void loadRecyclerView(ArrayList<CountryModel> countryList) {
+        countryAdapter = new CountryAdapter(countries);
+        recyclerView.setAdapter(countryAdapter);
     }
 
     private void initiateUI() {
@@ -58,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 ResultModel resultModel = response.body();
                 if(!(resultModel==null) && (resultModel.getResult() != null)){
                     countries = (ArrayList<CountryModel>) resultModel.getResult();
-                    countryAdapter = new CountryAdapter(countries);
-                    recyclerView.setAdapter(countryAdapter);
-                    //TODO: save data in room database and then show in recycler view
+//                    loadRecyclerView(countries);
+                    //TODO: save data in room database and then show in recycler view - done
+                    saveDataToDatabase(countries);
                 }
 
             }
@@ -70,5 +77,21 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, ""+t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void saveDataToDatabase(ArrayList<CountryModel> countries) {
+        for (int i = 0; i < countries.size() ; i++) {
+            String countryName = countries.get(i).getName();
+            String countrycode = countries.get(i).getCode();
+            String countryRegion = countries.get(i).getRegion();
+            CountryModel countryModel = new CountryModel(countryName, countrycode, countryRegion);
+            countryModelDao.insertCountry(countryModel);
+            getDataFromDatabase();
+        }
+    }
+
+    private void getDataFromDatabase() {
+        List<CountryModel> countryData = (ArrayList) countryModelDao.getCountryData();
+        loadRecyclerView((ArrayList<CountryModel>) countryData);
     }
 }

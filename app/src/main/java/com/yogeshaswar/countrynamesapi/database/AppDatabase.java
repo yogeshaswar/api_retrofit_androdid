@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.yogeshaswar.countrynamesapi.models.CountryModel;
 
-@Database(entities = {CountryModel.class}, version = 1, exportSchema = false)
+@Database(entities = {CountryModel.class}, version = 2, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "country.db";
 

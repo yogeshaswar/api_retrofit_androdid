@@ -13,7 +13,7 @@ import java.util.List;
 public interface CountryModelDao {
     // methods
     @Insert
-    void InsertCountry(CountryModel countryModel);
+    void insertCountry(CountryModel countryModel);
     @Query("SELECT * FROM country_data")
     List<CountryModel>getCountryData();
 }

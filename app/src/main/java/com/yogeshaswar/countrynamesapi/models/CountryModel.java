@@ -12,7 +12,8 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "country_data")
 @Generated("jsonschema2pojo")
 public class CountryModel {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    public int id;
     @NonNull
     @SerializedName("name")
     @Expose
@@ -37,6 +38,7 @@ public class CountryModel {
         this.code = code;
         this.region = region;
     }
+
 
     public String getName() {
         return name;
