@@ -30,6 +30,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
     @Override
     public void onBindViewHolder(@NonNull CountryViewHolder holder, int position) {
         holder.countryName.setText(list.get(position).getName());
+        holder.countryCode.setText(list.get(position).getCode());
     }
 
     @Override
@@ -39,10 +40,11 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.CountryV
 
     public class CountryViewHolder extends RecyclerView.ViewHolder{
         // fields from card
-        TextView countryName;
+        TextView countryName, countryCode;
         public CountryViewHolder(@NonNull View itemView) {
             super(itemView);
             countryName = itemView.findViewById(R.id.tv_name);
+            countryCode = itemView.findViewById(R.id.tv_code);
         }
     }
 }
